@@ -261,7 +261,11 @@ func configureLogger(ctx context.Context, logLevel string) {
 }
 
 func main() {
-	fmt.Println("test")
+	envVars := os.Environ()
+    
+        for _, envVar := range envVars {
+	    fmt.Println(envVar)
+        }
 	
 	flag.Usage = usage
 	flag.Parse()
