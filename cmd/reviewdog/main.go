@@ -261,6 +261,8 @@ func configureLogger(ctx context.Context, logLevel string) {
 }
 
 func main() {
+	fmt.Println("test")
+	
 	flag.Usage = usage
 	flag.Parse()
 	if err := run(os.Stdin, os.Stdout, opt); err != nil {
